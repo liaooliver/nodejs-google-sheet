@@ -7,12 +7,14 @@ const bodyParser = require('body-parser')
 
 const google_sheet = require('./src/api/google-sheet.controller');
 
+const googleSheet = require('./src/api/spreadsheet');
+
 app.use(cors());
 app.use(bodyParser.json()) // parse json
 app.use(bodyParser.urlencoded({ extended: false })) // parse application/x-www-form-urlencoded
 
-app.get('/', (req, res) => {
-    res.send("Hello world");
+app.get('/', (req, response) => {
+    googleSheet.accessSpreadsheet().then(res => response.send(res))
 })
 
 app.use('/google-sheet', google_sheet)

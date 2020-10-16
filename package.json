@@ -5,7 +5,8 @@
   "main": "app.js",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "google-spreadsheet": "^3.0.13"
   },
   "devDependencies": {
     "body-parse": "^0.1.0",
