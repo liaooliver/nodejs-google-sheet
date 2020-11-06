@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const sampleService = require('../services/sample');
+const googleSheet = require('../models/spreadsheet');
+const readSheetService = require('../services/readSheet');
 
-router.get('/', function (req, res) {
-    const URL = sampleService.sample();
-    return res.send(`Google sheet URL from => ${URL}`)
+router.get('/', async function (request, response) {
+    googleSheet.accessSpreadsheet().then(sheet => {
+        console.log("accessSpreadsheet => ,", sheet.sheetsByIndex[1].title)
+        readSheetService.loopAllData(sheet).then(res => response.send(res))
+    })
 })
 
 module.exports = router;
