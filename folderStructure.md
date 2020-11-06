@@ -18,3 +18,10 @@ src
 ## source
 https://softwareontheroad.com/ideal-nodejs-project-structure/
 
+## google edit token
+1h1bH_e93mwiydzSTI_SnUzUk8WJITvk37iZf52w1HhF1__yaGLrsYwIY
+
+sheet 1tloIdgp49FCRyS2vg6ShKSTw-02f_6Cb9xCXlxfI_YI
+
+https://theoephraim.github.io/node-google-spreadsheet/
+
