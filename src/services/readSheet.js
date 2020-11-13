@@ -1,5 +1,5 @@
 // require DB model from model
-const googleSheet = require('../models/spreadsheet');
+const { accessSpreadsheet } = require('../models/spreadsheet');
 const {
     response_allTicket,
     response_closeTicket,
@@ -9,7 +9,7 @@ const {
     status_code
 } = require('../config/status');
 
-// write business logic
+// write business logic example
 function loopAllData(sheet) {
 
     const sheets = sheet.sheetsByIndex[0];
@@ -23,11 +23,10 @@ function loopAllData(sheet) {
     }))
 }
 
-async function getAllTicket() {
-    const all = ['pending', 'working', 'redo', 'close']
-    return googleSheet.accessSpreadsheet()
+async function getAllTicket(category) {
+    return accessSpreadsheet()
         .then(async (doc) => {
-            return await all.map(async (status) => {
+            return await category.map(async (status) => {
                 const sheets = doc.sheetsByTitle[status];
                 const rows = sheets.getRows();
                 return await rows.then(row => {
@@ -42,7 +41,7 @@ async function getAllTicket() {
 
 async function getSingleTicket(id, status) {
     const title = status_code[status]
-    return googleSheet.accessSpreadsheet()
+    return accessSpreadsheet()
         .then(async (doc) => {
             const sheets = doc.sheetsByTitle[title]
             const rows = sheets.getRows();
@@ -53,8 +52,25 @@ async function getSingleTicket(id, status) {
         })
 }
 
+function getLast() {
+    console.log("LAST")
+}
+
+function notification(category) {
+    return getAllTicket(category).then(res => {
+        return Promise.all(res).then(res => {
+            const all = res.flat(2)
+            const filtered = all.filter(item => item.remainer < 30)
+            const sorted = filtered.sort((a, b) => a.remainer - b.remainer)
+            return sorted
+        })
+    })
+}
+
 module.exports = {
     loopAllData,
     getAllTicket,
-    getSingleTicket
+    getSingleTicket,
+    getLast,
+    notification
 };

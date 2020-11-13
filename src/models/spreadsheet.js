@@ -13,4 +13,43 @@ async function accessSpreadsheet() {
     return doc;
 }
 
-module.exports.accessSpreadsheet = accessSpreadsheet
+// How to use 
+    // pending_sheet().then(sheet => sheet.getRows().then(row => console.log("ROW => ," , row)))
+function pending_sheet() {
+    return accessSpreadsheet().then(async (doc) => {
+        return doc.sheetsByTitle['pending']
+    })    
+}
+
+function working_sheet() {
+    return accessSpreadsheet().then(async (doc) => {
+        return doc.sheetsByTitle['working']
+    })    
+}
+
+function redo_sheet() {
+    return accessSpreadsheet().then(async (doc) => {
+        return doc.sheetsByTitle['redo']
+    })    
+}
+
+function review_sheet() {
+    return accessSpreadsheet().then(async (doc) => {
+        return doc.sheetsByTitle['review']
+    })    
+}
+
+function close_sheet() {
+    return accessSpreadsheet().then(async (doc) => {
+        return doc.sheetsByTitle['close']
+    })    
+}
+
+module.exports = {
+    accessSpreadsheet,
+    pending_sheet,
+    working_sheet,
+    redo_sheet,
+    review_sheet,
+    close_sheet
+}
