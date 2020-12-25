@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 const google_sheet = require('./src/api/google-sheet.controller');
 const getSheet = require('./src/api/getSheet.controller')
 const postSheet = require('./src/api/postSheet.controller')
+const editSheet = require('./src/api/editSheet.controller')
 
 app.use(cors());
 app.use(bodyParser.json()) // parse json
@@ -22,6 +23,7 @@ app.get('/', (request, response) => {
 app.use('/google-sheet', google_sheet)
 app.use('/getSheet', getSheet)
 app.use('/postSheet', postSheet)
+app.use('/editSheet', editSheet)
 
 
 

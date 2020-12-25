@@ -1,14 +1,17 @@
 // require DB model from model
 const {
     pending_sheet,
-    working_sheet
+    working_sheet,
+    review_sheet
 } = require('../models/spreadsheet');
-const {
-    response_getSingleBasicInfo
-} = require('./response_format');
+
 const {
     _uuid
 } = require('../services/uuid');
+
+const {
+    response_reviewResult
+} = require('../services/response_format')
 
 async function postNewTicket(body) {
     return pending_sheet().then(sheet =>
@@ -26,27 +29,43 @@ async function postNewTicket(body) {
     )
 }
 
-async function launchTicket(id) {
-    const ticket_before = await pending_sheet().then(async sheet => {
-        const rows = await sheet.getRows()
-        const indexof = rows.map(x => x.id).indexOf(id)
+async function updateApply(id, data) {
 
+    let rows, indexof;
+    
+    const work_task = await working_sheet().then(async sheet => {
+        rows = await sheet.getRows()
+
+        indexof = rows.map(x => x.id).indexOf(id)
         return rows[indexof]
     })
 
-    const ticket_after = await working_sheet().then(async sheet => {
-        const { id, subject, project, module, description, principal, deadline, creator, createtime } = ticket_before;
-        const newRow = await sheet.addRow({ id, subject, project, module, description, principal, deadline, creator, createtime })
-        
-        const result = response_getSingleBasicInfo(newRow, '1')
-        
+    const add_review = await review_sheet().then(async sheet => {
+        const { id, subject, project, module, description, principal, deadline, creator, createtime } = work_task
+        const { finish, comment } = data
+        const newRow = await sheet.addRow({
+            id,
+            subject,
+            project,
+            module,
+            description,
+            principal,
+            deadline,
+            creator,
+            createtime,
+            finish: finish,
+            comment: comment
+        })
+
+        const result = await response_reviewResult(newRow, '3')
+        rows[indexof].delete()  
         return result
     })
 
-    return ticket_after
+    return add_review
 }
 
 module.exports = {
     postNewTicket,
-    launchTicket
+    updateApply
 };

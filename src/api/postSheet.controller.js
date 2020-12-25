@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { postNewTicket, launchTicket } = require('../services/postSheet');
+const { postNewTicket, updateApply } = require('../services/postSheet');
 
 router.post('/postform', function (request, response) {
     const body = request.body
@@ -10,11 +10,10 @@ router.post('/postform', function (request, response) {
     })
 })
 
-router.post('/launch', function (request, response) {
-    const { id } = request.query;
-    
-    launchTicket(id).then(res => {
-        response.json(res)
+router.post('/updateForm/:id', function (request, response) {
+    const { id } = request.params;
+    updateApply(id, request.body).then((res) => {
+        response.status(200).json(res)
     })
 })
 

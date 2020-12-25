@@ -25,7 +25,7 @@ function response_allTicket(row, status) {
         status: code[status]
     }
 }
-function response_getSingleBasicInfo({ id, subject, project, module, creator, createtime, principal, deadline, description }, status) {
+function response_getSingleBasicInfo({ id, subject, project, module, creator, createtime, principal, deadline, description, finish, comment }, status) {
     const { atLeast, isAlert } = calcAtLeast(deadline)
     return {
         status,
@@ -40,11 +40,34 @@ function response_getSingleBasicInfo({ id, subject, project, module, creator, cr
         description,
         isAlert,
         remainer: atLeast,
+        finish,
+        comment
+    }
+}
+
+function response_reviewResult({ id, subject, project, module, creator, createtime, principal, deadline, description, finish, comment }, status) {
+    const { atLeast, isAlert } = calcAtLeast(deadline)
+    return {
+        status,
+        id,
+        subject,
+        project,
+        module,
+        creator,
+        createtime,
+        principal,
+        deadline,
+        description,
+        isAlert,
+        remainer: atLeast,
+        finish,
+        comment
     }
 }
 
 module.exports = {
     response_closeTicket,
     response_allTicket,
-    response_getSingleBasicInfo
+    response_getSingleBasicInfo,
+    response_reviewResult
 }
